@@ -24,19 +24,12 @@ global variable：$variable
 XXXX, CCCC, ASDF
 
 ********************************************************************************
-
-(5)symbol 类枚举用法
-有些想指明为唯一值的标志型变量，如东南西北 east south west north,在ruby中可以直接以分号开头去声明，
-然后ruby保证该变量的唯一性
-这个通常用在hashes的key中保证key的值是唯一
-如上面hashes的例子就可以变成：
+(5)symbol 類說明
+ruby 保持該變數的唯一性。這個通常用在 hashes 中保證 key 的值是唯一。
 inst_section = {
 :cello => 'string',
-:clarinet => 'woodwind',
-......
+:clarinet => 'word'
 }
-使用时：inst_section[:cello] //=>woddwind
-symbol不是string:inst_section['cello']  //=>nil
 
 ruby 1.9的新语法，在hashes中直接用 key:value声明则直接可以用symbol作为键值
 如
@@ -46,8 +39,7 @@ clarinet:'woodwind'
 }
 使用：inst_section[:cello] //=>woddwind
 
-（6）流程控制语句 if while for
-ruby不用大括号，用end 来表示语句完结
+（6）流程控制語句 if while for
 if:
 if today.saturday?
 puts "Do chores around the house"
@@ -57,8 +49,7 @@ else
 puts "Go to work"
 end
 
-注意elsif写法，不是elseif
-
+while 用法
 while:
 num_pallets = 101
 weight = 1
@@ -68,61 +59,52 @@ while weight < 100 and num_pallets <= 30
       num_pallets += 1
 end
 
-支持的另外一种 if 和 while的写法（类似perl）：
-执行的语句 if 条件
-执行的语句 while 条件
+（7）regexp 
+用 =~ ，如果匹配，會返回第一個匹配的特徵的位置，否則返回 nil
+"s33425" =~ /\d/ => 1
 
-（7）regexp 正则表达式
-ruby的正则表达式形式（和javascript相似）： /xxx/
-用 =～去验证是否匹配字符串，如果匹配，会返回第一个匹配的字符串的下标位置，如果不匹配则返回nil
-if time =~ /\d\d:\d\d:\d\d/
-  puts "is time!!"
-end
-
-替换：
-sub(正则,字符串) 
-gsub(正则，字符串) #贪心模式
+替換：
+_sub(regexp, 'str)
+_gsub(regexp, 'str') #貪心模式
 newline= line.sub(/Perl/, 'Ruby')# replace first 'Perl' with 'Ruby'
 newerline = newline.gsub(/Python/, 'Ruby') # replace every 'Python' with 'Ruby'
 
-（8）block 代码块
-::在大括号或者 do end 之间的代码快
-{puts "fuck block"}
-或
-do
-  "fuck block"
-  "fuck bolck2"
-end
-
-::单行用{};多行用 do end
-
-::调用时，直接跟在方法调用后面
-例如 greet(方法本来的参数) {puts "fuck"}
-
-::yield:放在方法的代码块内，可看作是调用了之后传进来的block代码块
-例子：
+（8） code block
+在 大括號 或者 do end 之間
+單行用 {}; 多行用 do end
+yield的用法：
+* 單獨使用：
 def call_block
-  puts "Start of method"
+  puts "Ready? Go!!!"
   yield
   yield
-  puts "End of method"
+  puts "End."
 end
-call_block { puts "In the block" }
-#produces:
-#Start of method
-#In the block
-#In the block
-#End of method
 
-::yield可以传参数到block里的变量，block里面的变量用|xxx|接收参数，例如yield('fuck'),{|xxx| puts xxx} //xxx=> fuck
-def who_says_what
-  yield("Dave", "hello")
-  yield("Andy", "goodbye")
+call_block{puts "I AM WHO I AM."}
+=>
+Ready? Go!!!
+I AM WHO I AM
+I AM WHO I AM
+End.
+
+* 傳入參數
+block 裡面的變數用 |xxx| 接收參數。
+def cross
+  puts "Ready? Go!!!"
+  yield("Dave", "Hello!")
+  yield("Andy", "Goodbye!")
 end
-who_says_what {|person, phrase| puts "#{person} says #{phrase}"}
-produces:
-Dave says hello
-Andy says goodbye
+
+cross{ |name, word| puts "#{name} says \"#{word}\""
+=>
+Dave says "Hello!"
+Andy says "Goodbye!"
+******************************************************************************************************
+
+
+
+
 
 ::block的用途，ruby本身的lib就用block去实现遍历（iterator）
 animals = %w( ant bee cat dog elk )# create an array
